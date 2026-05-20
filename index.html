@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outil d&#x27;Analyse de Cohérence de Marque pour Influenceurs | Votre Diagnostic de Marque Personnel</title>
+    <meta name="description" content="Évaluez la cohérence de votre identité visuelle et de votre message à travers vos différentes plateformes sociales et contenus.">
+    <style>
+        :root {
+            --color-primary: #8a6c00; /* Darker refined gold */
+            --color-secondary: #e6d975; /* Lighter refined gold */
+            --color-text: #333;
+            --color-background: #f0f0f0;
+            --color-accent: #c4b050;
+            --color-border: #ccc;
+            --font-headline: 'Montserrat', sans-serif;
+            --font-body: 'Lato', sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Lato:wght@400;700&display=swap');
+
+        body {
+            font-family: var(--font-body);
+            line-height: 1.6;
+            color: var(--color-text);
+            background-color: var(--color-background);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            color: white;
+            padding: 4rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 5px solid var(--color-secondary);
+        }
+
+        header h1 {
+            font-family: var(--font-headline);
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin: 1rem auto 0;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--color-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section h2 {
+            font-family: var(--font-headline);
+            color: var(--color-primary);
+            font-size: 2.2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--color-secondary);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            display: block;
+            width: 50%;
+            height: 2px;
+            background-color: var(--color-accent);
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+        }
+
+        .tool-section {
+            background: linear-gradient(to bottom right, #fdfdfd, #ececec);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid var(--color-border);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.7rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            font-family: var(--font-headline);
+            font-size: 1.1rem;
+        }
+
+        input[type="text"],
+        textarea {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            font-size: 1rem;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: var(--color-accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(var(--color-accent), 0.2);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 700;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background-color: var(--color-accent);
+            transform: translateY(-2px);
+        }
+
+        #tool-result {
+            margin-top: 2rem;
+            padding: 2rem;
+            background-color: #fff;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            min-height: 100px;
+            display: none; /* Hidden by default */
+        }
+
+        #tool-result h3 {
+            font-family: var(--font-headline);
+            color: var(--color-primary);
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .score-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            background-color: #fcfcfc;
+            padding: 1rem;
+            border-left: 5px solid var(--color-accent);
+            border-radius: 4px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+
+        .score-card .label {
+            font-weight: 700;
+            color: var(--color-primary);
+            width: 180px;
+            flex-shrink: 0;
+        }
+
+        .score-card .value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--color-accent);
+            margin-left: 1rem;
+        }
+
+        .advice-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 1.5rem;
+        }
+
+        .advice-list li {
+            background-color: #f8f8f8;
+            margin-bottom: 0.8rem;
+            padding: 1rem 1.2rem;
+            border-left: 4px solid var(--color-secondary);
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+
+        .advice-list li strong {
+            color: var(--color-primary);
+        }
+
+        .seo-section {
+            background-color: #333;
+            color: #f0f0f0;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            border-top: 5px solid var(--color-accent);
+        }
+
+        .seo-section h3 {
+            font-family: var(--font-headline);
+            font-size: 1.8rem;
+            color: var(--color-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .seo-section p {
+            max-width: 900px;
+            margin: 0 auto 1rem auto;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .seo-section a {
+            color: var(--color-secondary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .seo-section a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: var(--color-primary);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: auto;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--color-secondary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Testimonials/Trust Section */
+        .testimonials-section {
+            background-color: var(--color-background);
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+
+        .testimonials-section h2 {
+            font-family: var(--font-headline);
+            color: var(--color-primary);
+            font-size: 2.2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid var(--color-border);
+            text-align: left;
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        .testimonial-card .author {
+            font-weight: 700;
+            color: var(--color-primary);
+            display: block;
+            margin-top: 1rem;
+        }
+
+        .testimonial-card .platform {
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            header p {
+                font-size: 1rem;
+            }
+            .section h2 {
+                font-size: 1.8rem;
+            }
+            .container {
+                margin: 1.5rem auto;
+                padding: 0 1rem;
+            }
+            .section {
+                padding: 1.5rem;
+            }
+            .tool-section {
+                padding: 1.5rem;
+            }
+            button {
+                width: 100%;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://outil-d-analyse-de-coherence-de-marque-pour-inf-038496a2.onrender.com">
+    <meta property="og:title" content="Outil d&#x27;Analyse de Cohérence de Marque pour Influenceurs">
+    <meta property="og:description" content="Évaluez la cohérence de votre identité visuelle et de votre message à travers vos différentes plateformes sociales et contenus.">
+    <meta property="og:url" content="https://outil-d-analyse-de-coherence-de-marque-pour-inf-038496a2.onrender.com">
+    <meta property="og:type" content="website">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Outil d'Analyse de Cohérence de Marque pour Influenceurs", "description": "Évaluez la cohérence de votre identité visuelle et de votre message à travers vos différentes plateformes sociales et contenus.", "url": "https://outil-d-analyse-de-coherence-de-marque-pour-inf-038496a2.onrender.com", "applicationCategory": "UtilityApplication", "operatingSystem": "Web Browser"}</script>
+</head>
+<body data-site-slug="outil-d-analyse-de-coherence-de-marque-pour-inf-038496a2" data-runtime-mode="profile_generator">
+
+    <header>
+        <h1>Affirmez Votre Marque, Maîtrisez Votre Impact</h1>
+        <p>L'outil essentiel pour les créateurs de contenu souhaitant une identité visuelle et un message parfaitement alignés sur toutes leurs plateformes.</p>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="section tool-section">
+                <h2>Votre Diagnostic de Marque Personnel</h2>
+                <p>Déposez des extraits de vos contenus et de votre communication pour une analyse instantanée. Nous évaluerons la cohérence de vos éléments clés.</p>
+
+                <form id="tool-form">
+                    <label for="visual-description">Décrivez votre esthétique visuelle (couleurs, typographies, filtres habituels) :</label>
+                    <textarea id="visual-description" name="visual-description" placeholder="Ex: Tons chauds, typographie serif élégante, filtres vintage, présence de motifs géométriques..." required></textarea>
+
+                    <label for="message-description">Décrivez le ton et les thèmes principaux de votre message (valeurs, sujets abordés, langage) :</label>
+                    <textarea id="message-description" name="message-description" placeholder="Ex: Inspirant et éducatif, axé sur le développement personnel et la durabilité, utilise un langage direct et empathique..." required></textarea>
+
+                    <label for="platform-examples">Exemples de contenu ou description de présence sur vos plateformes (chaque plateforme sur une nouvelle ligne) :</label>
+                    <textarea id="platform-examples" name="platform-examples" placeholder="Ex: Instagram: photos de voyages épurées, légendes réfléchies. YouTube: vlogs dynamiques sur l'artisanat. Blog: articles de fond sur l'entrepreneuriat." required></textarea>
+
+                    <button type="submit" id="tool-submit">Analyser ma Cohérence de Marque</button>
+                </form>
+
+                <div id="tool-result">
+                    <h3 id="result-headline">Résultats de Votre Analyse</h3>
+                    <div class="score-card">
+                        <span class="label">Cohérence Visuelle :</span>
+                        <span class="value" id="score-visual"></span>
+                    </div>
+                    <div class="score-card">
+                        <span class="label">Cohérence du Message :</span>
+                        <span class="value" id="score-message"></span>
+                    </div>
+                    <div class="score-card">
+                        <span class="label">Harmonie Multi-Plateforme :</span>
+                        <span class="value" id="score-platform"></span>
+                    </div>
+                    <div class="score-card">
+                        <span class="label">Score Global de Cohérence :</span>
+                        <span class="value" id="score-global"></span>
+                    </div>
+
+                    <h4 style="font-family: var(--font-headline); color: var(--color-primary); margin-top: 2rem;">Recommandations Personnalisées :</h4>
+                    <ul class="advice-list" id="advice-list"></ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Pourquoi la Cohérence de Marque est Cruciale ?</h2>
+                <p>Dans un paysage numérique saturé, une marque personnelle forte et unifiée n'est plus un luxe, c'est une nécessité. Une cohérence impeccable renforce la reconnaissance, établit la confiance et distingue votre contenu. Elle assure que votre public vous identifie instantanément, peu importe où il vous trouve, transformant ainsi des visiteurs occasionnels en une communauté loyale et engagée.</p>
+                <p>Notre outil vous aide à identifier les écarts et à affiner votre image pour un impact maximal, garantissant que chaque publication, chaque vidéo, chaque mot contribue à l'histoire unique de votre marque.</p>
+            </section>
+        </div>
+
+        <section class="testimonials-section">
+            <h2>Ce Qu'en Disent Nos Créateurs</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p>"J'ai toujours eu l'impression que quelque chose clochait dans mon feed Instagram par rapport à mes vidéos YouTube. Cet outil a mis le doigt sur les incohérences et m'a donné des pistes concrètes. Mon engagement a doublé !"</p>
+                    <span class="author">Léa Dupont</span>
+                    <span class="platform">Influenceuse Lifestyle</span>
+                </div>
+                <div class="testimonial-card">
+                    <p>"En tant que coach, mon message doit être clair et constant. L'analyse m'a montré comment uniformiser mon ton sur mes newsletters et mes posts LinkedIn. Un vrai game-changer pour ma crédibilité."</p>
+                    <span class="author">Marc Dubois</span>
+                    <span class="platform">Coach en Développement Personnel</span>
+                </div>
+                <div class="testimonial-card">
+                    <p>"J'hésitais sur ma nouvelle charte graphique. L'outil m'a aidé à valider mes choix et à les étendre de manière plus pertinente sur TikTok. La cohérence visuelle n'a jamais été aussi simple à atteindre."</p>
+                    <span class="author">Sophie Leroy</span>
+                    <span class="platform">Artiste Numérique & Tiktokeuse</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="seo-section">
+        <h3>Optimisez Votre Présence en Ligne en France</h3>
+        <p>Vous cherchez à renforcer votre <strong>marque personnelle d'influenceur</strong> ? Notre <strong>outil d'analyse de cohérence</strong> est conçu pour les créateurs français. Que vous soyez un <strong>influenceur Instagram</strong>, un <strong>YouTubeur gaming</strong>, un <strong>blogueur voyage</strong> ou un <strong>expert LinkedIn</strong>, la <strong>cohésion de votre identité visuelle</strong> et la <strong>pertinence de votre message</strong> sont essentielles pour capter l'attention de votre audience en France. Apprenez à <strong>évaluer votre image de marque</strong>, à <strong>uniformiser votre contenu sur les réseaux sociaux</strong> et à <strong>développer une stratégie de marque personnelle forte</strong>. Notre solution vous aide à <strong>améliorer votre personal branding</strong> et à vous démarquer dans le marché français concurrentiel.</p>
+        <p>Découvrez comment <strong>optimiser votre réputation en ligne</strong>, <strong>renforcer la confiance de vos abonnés</strong> et <strong>générer plus d'engagement</strong> grâce à une marque cohérente et authentique. Ne laissez plus la disparité de vos contenus nuire à votre impact. Notre outil est votre allié pour une <strong>stratégie d'influence réussie en France</strong>.</p>
+    </div>
+
+    <footer>
+        © 2023 Marque Authentique. Tous droits réservés. | <a href="#" data-affiliate-slot="privacy">Politique de Confidentialité</a> | <a href="#" data-affiliate-slot="terms">Conditions d'Utilisation</a>
+    </footer>
+
+    <script>
+        document.getElementById('tool-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const visualDescription = document.getElementById('visual-description').value;
+            const messageDescription = document.getElementById('message-description').value;
+            const platformExamples = document.getElementById('platform-examples').value;
+
+            // Simple, deterministic scoring based on input length and perceived complexity
+            // This is a dummy function, not a real AI analysis
+            const calculateScore = (input) => {
+                let score = 0;
+                // Base score related to length
+                score += Math.min(input.length / 5, 50); // Max 50 points for length
+
+                // Keywords for 'good' consistency
+                const positiveKeywords = ['uniforme', 'harmonieux', 'cohérent', 'identifiable', 'style', 'palette', 'ton', 'message clair', 'valeurs', 'distinctif', 'reconnaissable'];
+                positiveKeywords.forEach(keyword => {
+                    if (input.toLowerCase().includes(keyword)) {
+                        score += 5;
+                    }
+                });
+
+                // Keywords for potential 'bad' consistency
+                const negativeKeywords = ['différent', 'varié', 'inconsistent', 'éclectique', 'pas toujours pareil'];
+                negativeKeywords.forEach(keyword => {
+                    if (input.toLowerCase().includes(keyword)) {
+                        score -= 10;
+                    }
+                });
+                
+                return Math.max(0, Math.min(100, Math.round(score))); // Score between 0 and 100
+            };
+
+            const scoreVisual = calculateScore(visualDescription);
+            const scoreMessage = calculateScore(messageDescription);
+            const scorePlatform = calculateScore(platformExamples);
+
+            const globalScore = Math.round((scoreVisual + scoreMessage + scorePlatform) / 3);
+
+            document.getElementById('score-visual').textContent = `${scoreVisual}%`;
+            document.getElementById('score-message').textContent = `${scoreMessage}%`;
+            document.getElementById('score-platform').textContent = `${scorePlatform}%`;
+            document.getElementById('score-global').textContent = `${globalScore}%`;
+
+            const adviceList = document.getElementById('advice-list');
+            adviceList.innerHTML = ''; // Clear previous advice
+
+            const addAdvice = (advice) => {
+                const li = document.createElement('li');
+                li.textContent = advice;
+                adviceList.appendChild(li);
+            };
+
+            if (globalScore < 50) {
+                addAdvice('Votre marque manque de cohérence globale. Concentrez-vous sur l\'établissement d\'une identité forte avant de la décliner.');
+            } else if (globalScore < 75) {
+                addAdvice('Bonne base ! Des ajustements mineurs peuvent améliorer significativement votre impact. Revoyez vos fondamentaux.');
+            } else {
+                addAdvice('Excellente cohérence de marque ! Continuez à maintenir cette ligne directrice pour fidéliser votre audience.');
+            }
+
+            if (scoreVisual < 60) {
+                addAdvice('<strong>Visuel :</strong> Révisez votre charte graphique (couleurs, polices, logo) pour une harmonie accrue sur toutes vos plateformes.');
+            } else if (scoreVisual < 80) {
+                addAdvice('<strong>Visuel :</strong> Explorez des filtres ou styles de retouche unifiés pour toutes vos images et vidéos. Pensez à vos miniatures YouTube et bannières.');
+            } else {
+                addAdvice('<strong>Visuel :</strong> Votre identité visuelle est solide. Pensez à de légères évolutions pour rester pertinent sans perdre votre essence.');
+            }
+
+            if (scoreMessage < 60) {
+                addAdvice('<strong>Message :</strong> Clarifiez vos valeurs et votre proposition de valeur. Votre public doit comprendre qui vous êtes et ce que vous représentez en un coup d\'œil.');
+            } else if (scoreMessage < 80) {
+                addAdvice('<strong>Message :</strong> Affinez votre ton de voix. Est-il toujours le même, que vous écriviez un tweet ou un article de blog ?');
+            } else {
+                addAdvice('<strong>Message :</strong> Votre message est très clair et cohérent. Cela aide à construire une forte connexion avec votre audience.');
+            }
+
+            if (scorePlatform < 60) {
+                addAdvice('<strong>Multi-Plateforme :</strong> Il semble y avoir des écarts importants entre vos différentes plateformes. Adaptez votre contenu sans trahir votre identité fondamentale.');
+            } else if (scorePlatform < 80) {
+                addAdvice('<strong>Multi-Plateforme :</strong> Assurez-vous que les messages clés et l\'esthétique principale sont bien transposés d\'une plateforme à l\'autre, même si le format change.');
+            } else {
+                addAdvice('<strong>Multi-Plateforme :</strong> Vous réussissez à maintenir une présence cohérente, peu importe la plateforme. C\'est un atout majeur !');
+            }
+            
+            document.getElementById('tool-result').style.display = 'block';
+            document.getElementById('tool-result').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+<div id="qa-smoke-result" hidden></div>
+<script id="farmbuilder-affiliate-helper">
+(function () {
+  window.__UTILITY_AFFILIATE_MAP = window.__UTILITY_AFFILIATE_MAP || {};
+  document.addEventListener("click", function (event) {
+    const target = event.target.closest("[data-affiliate-slot]");
+    if (!target) return;
+    const slot = target.getAttribute("data-affiliate-slot");
+    const href = window.__UTILITY_AFFILIATE_MAP[slot];
+    if (!href) return;
+    if (target.tagName && target.tagName.toLowerCase() === "a") {
+      target.setAttribute("href", href);
+      target.removeAttribute("rel");
+      return;
+    }
+    event.preventDefault();
+    window.open(href, "_blank");
+  }, true);
+})();
+</script>
+<script id="farmbuilder-functional-qa">
+(function () {
+  function marker() {
+    let node = document.getElementById("qa-smoke-result");
+    if (node) return node;
+    node = document.createElement("div");
+    node.id = "qa-smoke-result";
+    node.hidden = true;
+    document.body.appendChild(node);
+    return node;
+  }
+
+  let qaFinished = false;
+  let qaWatchdog = null;
+
+  function normalize(text) {
+    return String(text || "").replace(/\s+/g, " ").trim();
+  }
+
+  function findForm() {
+    return document.getElementById("tool-form") || document.querySelector("form");
+  }
+
+  function findResult() {
+    return (
+      document.getElementById("tool-result") ||
+      document.querySelector("[data-result]") ||
+      document.querySelector(".tool-result, .result-card, .result, .results, .output, .preview, .diagnostic, .analysis")
+    );
+  }
+
+  function primaryAction(form) {
+    if (!form) return null;
+    return (
+      document.getElementById("tool-submit") ||
+      form.querySelector("#tool-submit") ||
+      form.querySelector("[data-primary-action]") ||
+      form.querySelector("button[type=submit]") ||
+      form.querySelector("button") ||
+      form.querySelector("input[type=submit]")
+    );
+  }
+
+  function resultSignature(node) {
+    if (!node) return "";
+    const text = normalize(node.textContent);
+    const html = normalize(node.innerHTML).slice(0, 600);
+    return `${text}||${html}`;
+  }
+
+  function resultHeadline(node) {
+    if (!node) return "";
+    const heading = node.querySelector("h1, h2, h3, strong, b");
+    return normalize(heading ? heading.textContent : "");
+  }
+
+  function sampleText(field) {
+    const key = `${field.id || ""} ${field.name || ""} ${field.placeholder || ""}`.toLowerCase();
+    if (/email/.test(key)) return "bonjour@example.com";
+    if (/url|site|website|lien/.test(key)) return "https://example.com/offre-solaire";
+    if (/phone|tel|mobile/.test(key)) return "0612345678";
+    if (/ville|city|localisation|location|region|departement|postal/.test(key)) return "Paris";
+    if (/orientation/.test(key)) return "sud";
+    if (/keyword|theme|topic|sujet|subject/.test(key)) return "energie solaire domestique";
+    if (/titre|title/.test(key)) return "Simulateur solaire maison";
+    if (/nom|name|project/.test(key)) return "Projet Horizon";
+    if (/description|notes|content|message/.test(key)) return "Maison individuelle exposee sud avec toiture exploitable.";
+    return field.placeholder || "France";
+  }
+
+  function sampleNumber(field) {
+    const key = `${field.id || ""} ${field.name || ""}`.toLowerCase();
+    if (/inclinaison|angle|slope/.test(key)) return "30";
+    if (/surface|size|m2|sqm/.test(key)) return "28";
+    if (/annee|year/.test(key)) return "2024";
+    if (/prix|price|budget|cost|amount|montant/.test(key)) return "12000";
+    const min = Number(field.min || "");
+    const max = Number(field.max || "");
+    if (Number.isFinite(min) && Number.isFinite(max) && max >= min) {
+      return String(Math.min(max, Math.max(min, min + Math.round((max - min) * 0.35))));
+    }
+    if (Number.isFinite(min)) return String(Math.max(min, 12));
+    if (Number.isFinite(max)) return String(Math.min(max, 12));
+    return field.value || "12";
+  }
+
+  function applySample(field) {
+    const tag = (field.tagName || "").toLowerCase();
+    const type = (field.type || "").toLowerCase();
+    if (field.disabled) return;
+    if (type === "hidden" || type === "submit" || type === "button" || type === "reset" || type === "image" || type === "file") {
+      return;
+    }
+    const currentValue = normalize(field.value);
+    if (tag === "select") {
+      if (currentValue) return;
+      const option = Array.from(field.options || []).find((item) => item.value && !item.disabled) || field.options[0];
+      if (option) field.value = option.value;
+      return;
+    }
+    if (type === "checkbox") {
+      if (field.checked) return;
+      field.checked = true;
+      return;
+    }
+    if (type === "radio") {
+      if (field.checked) return;
+      field.checked = true;
+      return;
+    }
+    if (type === "date") {
+      if (currentValue) return;
+      field.value = "2026-03-01";
+      return;
+    }
+    if (type === "email") {
+      if (currentValue) return;
+      field.value = "bonjour@example.com";
+      return;
+    }
+    if (type === "url") {
+      if (currentValue) return;
+      field.value = "https://example.com/offre-solaire";
+      return;
+    }
+    if (type === "tel") {
+      if (currentValue) return;
+      field.value = "0612345678";
+      return;
+    }
+    if (type === "color") {
+      if (currentValue) return;
+      field.value = "#2f855a";
+      return;
+    }
+    if (type === "number" || type === "range") {
+      if (currentValue) return;
+      field.value = sampleNumber(field);
+      return;
+    }
+    if (currentValue) return;
+    field.value = sampleText(field);
+  }
+
+  function stamp(status, detail, headline, primary) {
+    if (qaFinished) return;
+    qaFinished = true;
+    if (qaWatchdog) {
+      window.clearTimeout(qaWatchdog);
+      qaWatchdog = null;
+    }
+    const node = marker();
+    node.dataset.status = status;
+    node.dataset.mode = "native-form";
+    node.dataset.detail = detail || "";
+    node.dataset.headline = headline || "";
+    node.dataset.primary = primary || "";
+    node.dataset.viewport = window.innerWidth <= 640 ? "mobile" : "desktop";
+    window.setTimeout(function () {
+      try {
+        window.stop();
+      } catch (_error) {}
+    }, 0);
+  }
+
+  function installModalGuards() {
+    const noop = function () {};
+    const approve = function () { return true; };
+    const empty = function () { return ""; };
+    try { window.alert = noop; } catch (_error) {}
+    try { window.confirm = approve; } catch (_error) {}
+    try { window.prompt = empty; } catch (_error) {}
+  }
+
+  function triggerAction(form, action) {
+    try {
+      if (typeof form.requestSubmit === "function") {
+        form.requestSubmit(action || undefined);
+        return;
+      }
+    } catch (_error) {}
+    if (action && typeof action.click === "function") {
+      action.click();
+      return;
+    }
+    form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+  }
+
+  function inspectResult(before, attemptsLeft) {
+    const result = findResult();
+    if (!result) {
+      stamp("fail", "La zone de resultat est introuvable.", "");
+      return;
+    }
+    const after = resultSignature(result);
+    const text = normalize(result.textContent);
+    if (after && after !== before && text.length >= 24) {
+      const primary = result.querySelector("a[href], button[data-href], [data-primary-url]") || document.querySelector("#tool-result a[href]");
+      stamp("pass", "Le formulaire natif a mis a jour la zone de resultat.", resultHeadline(result), primary ? (primary.getAttribute("href") || primary.getAttribute("data-primary-url") || "") : "");
+      return;
+    }
+    if (attemptsLeft > 0) {
+      window.setTimeout(function () {
+        inspectResult(before, attemptsLeft - 1);
+      }, 250);
+      return;
+    }
+    stamp("fail", "La zone de resultat n'a pas renvoye de contenu exploitable.", resultHeadline(result));
+  }
+
+  function runSmoke() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("__qa") !== "functional") return;
+    qaWatchdog = window.setTimeout(function () {
+      stamp("fail", "QA smoke timed out before the page reported a usable result.", "");
+    }, 7000);
+    const form = findForm();
+    if (!form) {
+      stamp("fail", "Le formulaire principal est introuvable.", "");
+      return;
+    }
+    const result = findResult();
+    const before = resultSignature(result);
+    installModalGuards();
+    try {
+      form.querySelectorAll("input, select, textarea").forEach(applySample);
+    } catch (error) {
+      stamp("fail", error && error.message ? `QA smoke sample failed: ${error.message}` : "QA smoke sample failed before submit.", "");
+      return;
+    }
+    const action = primaryAction(form);
+    try {
+      triggerAction(form, action);
+    } catch (error) {
+      stamp("fail", error && error.message ? `QA smoke submit failed: ${error.message}` : "QA smoke submit failed.", "");
+      return;
+    }
+    inspectResult(before, 10);
+  }
+
+  window.addEventListener("error", function (event) {
+    const message = event && event.message ? event.message : "JavaScript runtime error during QA smoke.";
+    stamp("fail", `QA smoke JS error: ${message}`, "");
+  }, { once: true });
+
+  window.addEventListener("unhandledrejection", function (event) {
+    const reason = event && event.reason;
+    const detail = typeof reason === "string"
+      ? reason
+      : reason && reason.message
+        ? reason.message
+        : "Unhandled promise rejection during QA smoke.";
+    stamp("fail", `QA smoke rejection: ${detail}`, "");
+  }, { once: true });
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () {
+      window.setTimeout(runSmoke, 60);
+    }, { once: true });
+  } else {
+    window.setTimeout(runSmoke, 60);
+  }
+})();
+</script>
+</body>
+</html>
